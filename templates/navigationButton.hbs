@@ -4,7 +4,7 @@
 	</a>
 {{/if_value_equals}}
 {{#if_value_equals _pluginName 'graphic'}}
-	<a class="{{_classes}} nav-layout-{{_layout}}" data-event="{{_dataEvent}}" role="region" aria-label="{{ariaLabel}}" tabindex="0">
+	<a class="{{_classes}} nav-layout-{{_layout}}" data-event="{{_dataEvent}}" role="region" aria-label="{{_graphic.alt}}" tabindex="0">
 		<img src="{{_graphic._src}}">
 	</a>
 {{else}}
