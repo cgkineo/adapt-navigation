@@ -1,0 +1,55 @@
+.navigation {
+
+	.nav-layout-left {
+		float:left;
+	}
+	.nav-layout-center {
+		float:none;
+		vertical-align: top;
+		display:inline-block;
+	}
+	.nav-layout-right {
+		float:right;
+	}
+
+	.tooltip {
+		font-family: @font-family;
+		font-size: 13px;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        left: 0;
+        bottom: 7px;
+		opacity: 0;
+		transform: translateY(20px);
+        transition: all 0.3s ease-in;
+        -webkit-font-smoothing: initial;
+        text-decoration: none;
+        color: @navigation-icon-color;
+	}
+
+	.page-level-progress-navigation {
+		.tooltip {
+			bottom: -3px;
+		}
+	}
+
+	a, button {
+		position:relative;
+	}
+
+	.no-touch &:hover {
+		.tooltip {
+            opacity: 1;
+            transform: translateY(0);
+		}
+	}
+
+	.touch {
+		.tooltip {
+            opacity: 1;
+            transform: translateY(0);
+		}
+	}
+
+}

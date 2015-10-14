@@ -1,0 +1,51 @@
+//course.json
+
+"_navigationLayout": [
+    {
+        "_pluginName": "back",
+        "_isEnabled": true,
+        "_showTooltip": true,
+        "_layout": "left",
+        "tooltip": "Back",
+        "ariaLabel": "Back"
+    },
+    {
+        "_pluginName": "home",
+        "_isEnabled": true,
+        "_showTooltip": true,
+        "_layout": "left",
+        "tooltip": "Home",
+        "ariaLabel": "Home"
+    },
+    {
+        "_pluginName": "graphic",
+        "_isEnabled": true,
+        "_layout": "center",
+        "_graphic": {
+            "_src": "http://vignette4.wikia.nocookie.net/mrmen/images/5/52/Small.gif/revision/latest?cb=20100731114437",
+            "alt": "Image of Mr Small from 'Mr Men' cartoon series"
+        }
+    },  
+    {
+        "_pluginName": "text",
+        "_isEnabled": true,
+        "_layout": "center",
+        "text": "Adapt Learning",
+        "ariaLabel": "Adapt Learning"
+    },    
+    {
+        "_pluginName": "pageLevelProgress",
+        "_isEnabled": true,
+        "_showTooltip": true,
+        "_layout": "right",
+        "tooltip": "Progress"
+    },
+    {
+        "_pluginName": "drawer",
+        "_isEnabled": true,
+        "_showTooltip": true,
+        "_layout": "right",
+        "tooltip": "Drawer",
+        "ariaLabel": "Open course resources."
+    }
+],
