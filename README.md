@@ -9,10 +9,46 @@ The current layout can be changed, updated or removed.
 
 ###Usage
 
-1. For a single layout course  
+####For a single layout course  
+
 Copy [example.json](https://github.com/cgkineo/adapt-navigation/blob/develop/example.json) into ``course.json`` and rearrange / amend.
 
-2. Programmic usage
+####Layout items
+Each item in a layout represents a button the navigation bar.
+
+```
+{
+    "_name": "back",
+    "_isEnabled": true,
+    "_classes": "base navigation-back-button",
+    "_iconClasses": "icon icon-controls-small-left",
+    "_dataEvent": "backButton",
+    "_showTooltip": true,
+    "_layout": "left",
+    "_sizes": "small medium large",
+    "tooltip": "Back",
+    "ariaLabel": "Back"
+}
+```
+  
+| Property Name | Description |
+| --- | --- |
+| ``_name`` | ``back``,``home``,``drawer``,``text``,``graphic``,``extensionName`` is used to identify the button type |
+| ``_isEnabled`` | ``true``,``false`` used to show / hide the button |
+| ``_classes`` | Used to uniquely identfy the button in the DOM |
+| ``_iconClasses`` | Used to add styling classes for the button |
+| ``_dataEvent`` | Adapt event to trigger. Prefixed with ``navigation:`` |
+| ``_showTooltip`` | ``true``,``false`` as described |
+| ``_layout`` | ``left``,``right``,``center`` as described |
+| ``_sizes`` | ``small``,``medium``,``large`` include all screen sizes displaying the button |
+| ``tooltip`` | Tooltip text |
+| ``ariaLabel`` | Button aria label text |
+| ``text`` | ``text`` button text |
+| ``_graphic`` | Graphic ``src`` and ``alt`` object |
+  
+  
+
+####Programmic usage
 
 
 | Event Name | Description |

@@ -55,16 +55,16 @@ define([
             for (var i = 0, l = layout.length; i < l; i++) {
                 var item = layout[i];
                 var extensionDefaults = {};
-                switch (item._pluginName) {
+                switch (item._name) {
                 case "text": case "back": case "drawer": case "home": case "graphic":
-                    extensionDefaults = _.findWhere(defaultSettings, {_pluginName: item._pluginName}) || {};
+                    extensionDefaults = _.findWhere(defaultSettings, {_name: item._name}) || {};
                     item._type = "_core";
                     break;
                 default:
                     var k = "_extensions";
-                    var e = "_"+item._pluginName;
+                    var e = "_"+item._name;
                     if (globals[k] && globals[k][e]) {
-                        var defaultGlobals = _.findWhere(defaultSettings, {_pluginName: item._pluginName}) || {};
+                        var defaultGlobals = _.findWhere(defaultSettings, {_name: item._name}) || {};
                         extensionDefaults = $.extend(true, defaultGlobals, globals[k][e]);
                     }
                     item._type = k;
@@ -260,7 +260,7 @@ define([
         addButtonDefaults: function(buttonDefaults) {
             var index = -1;
             _.find(defaultSettings, function(item, itemIndex) {
-                if (item._pluginName == buttonDefaults._pluginName) {
+                if (item._name == buttonDefaults._name) {
                     index = itemIndex;
                     return true;
                 }
@@ -328,10 +328,10 @@ define([
                 var oldItem = allItems[i];
                 var newItem;
 
-                if (_.contains(layout, oldItem._pluginName)) { //item referenced by string
+                if (_.contains(layout, oldItem._name)) { //item referenced by string
                     newItem = oldItem;
                 } else {
-                    newItem = _.findWhere(layout, { _pluginName: oldItem._pluginName }); //whole new item object
+                    newItem = _.findWhere(layout, { _name: oldItem._name }); //whole new item object
                     if (newItem) {
                         newItem = $.extend(true, oldItem, newItem); //overlay updates
                     } else {
@@ -362,8 +362,8 @@ define([
                 var layout = this.layouts[i];
                 for (var la = 0, lal = layout.length; la < lal; la++) {
                     var item = layout[la];
-                    merged[item._pluginName] = merged[item._pluginName] || {};
-                    merged[item._pluginName] = $.extend(true, {}, item, merged[item._pluginName]);
+                    merged[item._name] = merged[item._name] || {};
+                    merged[item._name] = $.extend(true, {}, item, merged[item._name]);
                 }
             }
             return _.values(merged);

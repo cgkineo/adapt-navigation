@@ -2,7 +2,7 @@
 
 "_navigationLayout": [
     {
-        "_pluginName": "back",
+        "_name": "back",
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "left",
@@ -10,7 +10,7 @@
         "ariaLabel": "Back"
     },
     {
-        "_pluginName": "home",
+        "_name": "home",
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "left",
@@ -18,7 +18,7 @@
         "ariaLabel": "Home"
     },
     {
-        "_pluginName": "graphic",
+        "_name": "graphic",
         "_isEnabled": true,
         "_layout": "center",
         "_graphic": {
@@ -27,21 +27,21 @@
         }
     },  
     {
-        "_pluginName": "text",
+        "_name": "text",
         "_isEnabled": true,
         "_layout": "center",
         "text": "Adapt Learning",
         "ariaLabel": "Adapt Learning"
     },    
     {
-        "_pluginName": "pageLevelProgress",
+        "_name": "pageLevelProgress",
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "right",
         "tooltip": "Progress"
     },
     {
-        "_pluginName": "drawer",
+        "_name": "drawer",
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "right",

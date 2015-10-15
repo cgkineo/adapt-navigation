@@ -17,7 +17,7 @@ define([
         },
 
         render: function() {
-            var template = Handlebars.templates["navigationButton-"+this.model.get("_pluginName")];
+            var template = Handlebars.templates["navigationButton-"+this.model.get("_name")];
 
             //replace current element or add new element to navigation bar
 

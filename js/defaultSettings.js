@@ -1,7 +1,7 @@
 define(function() {
 	return [
         {
-            "_pluginName": "graphic",
+            "_name": "graphic",
             "_isEnabled": true,
             "_classes": "base navigation-graphic",
             "_layout": "center",
@@ -10,7 +10,7 @@ define(function() {
             "ariaLabel": "Adapt Learning",
         },
         {
-            "_pluginName": "text",
+            "_name": "text",
             "_isEnabled": true,
             "_classes": "base navigation-text",
             "_layout": "center",
@@ -19,7 +19,7 @@ define(function() {
             "ariaLabel": "Adapt Learning",
         },
         {
-            "_pluginName": "back",
+            "_name": "back",
             "_isEnabled": true,
             "_classes": "base navigation-back-button",
             "_iconClasses": "icon icon-controls-small-left",
@@ -31,7 +31,7 @@ define(function() {
             "ariaLabel": "Back"
         },
         {
-            "_pluginName": "home",
+            "_name": "home",
             "_isEnabled": true,
             "_classes": "base navigation-menu-button",
             "_iconClasses": "icon icon-home",
@@ -43,7 +43,7 @@ define(function() {
             "ariaLabel": "Home"
         },
         {
-            "_pluginName": "drawer",
+            "_name": "drawer",
             "_isEnabled": true,
             "_classes": "base navigation-drawer-toggle-button",
             "_iconClasses": "icon icon-list",
@@ -55,7 +55,7 @@ define(function() {
             "ariaLabel": "Open course resources."
         },
         {
-            "_pluginName": "pageLevelProgress",
+            "_name": "pageLevelProgress",
             "_classes": "base page-level-progress-navigation",
             "_isEnabled": true,
             "_layout": "right",
