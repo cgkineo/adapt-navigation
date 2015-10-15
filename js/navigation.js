@@ -10,6 +10,7 @@ define([
         layouts: [],
         $elements: null,
         coreChildren: [],
+        defaultSettings: defaultSettings,
 
         initialize: function() {
             if (Adapt.navigation) return false;
@@ -81,6 +82,7 @@ define([
             this.listenTo(Adapt, 'menuView:ready pageView:ready pluginView:ready', this.onSectionLoaded);
 
             this.listenTo(Adapt, 'navigation:addLayout', this.addLayout);
+            this.listenTo(Adapt, 'navigation:addButtonDefaults', this.addButtonDefaults);
             this.listenTo(Adapt, 'navigation:cloneLayout', this.cloneLayout);
             this.listenTo(Adapt, 'navigation:updateLayout', this.updateCurrentLayout);
             this.listenTo(Adapt, 'navigation:changeLayout', this.changeCurrentLayout);
@@ -253,6 +255,18 @@ define([
             }
 
             this.$("> style").html(cssStyling);
+        },
+
+        addButtonDefaults: function(buttonDefaults) {
+            var index = -1;
+            _.find(defaultSettings, function(item, itemIndex) {
+                if (item._pluginName == buttonDefaults._pluginName) {
+                    index = itemIndex;
+                    return true;
+                }
+            });
+            if (index == -1) defaultSettings.push(buttonDefaults);
+            else _.extend(defaultSettings[index], buttonDefaults); 
         },
 
         addLayout: function(layout) {
