@@ -66,7 +66,8 @@ define([
                     var k = "_extensions";
                     var e = "_"+item._pluginName;
                     if (this.globals[k] && this.globals[k][e]) {
-                        globals = this.globals[k][e];
+                        var defaultGlobals = _.findWhere(defaultSettings, {_pluginName: item._pluginName}) || {};
+                        globals = $.extend(true, defaultGlobals, this.globals[k][e]);
                     }
                     item._type = k;
                     item._plugin = e;

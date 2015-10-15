@@ -56,9 +56,12 @@ define(function() {
         },
         {
             "_pluginName": "pageLevelProgress",
+            "_classes": "base page-level-progress-navigation",
             "_isEnabled": true,
             "_layout": "right",
-            "_sizes": "small medium large"
+            "_sizes": "small medium large",
+            "_showTooltip": true,
+            "tooltip": "Progress"
         }
     ];
 });
