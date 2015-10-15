@@ -2,7 +2,7 @@
     
 
 ###Description
-The is a layout engine for the navigation bar.   
+This is a layout engine for the navigation bar.   
 The engine is built using a layout stack.  
 The initial layout in the ``course.json`` is the first item on the stack.  
 A new layout can be added to or cloned from the layout stack.  
