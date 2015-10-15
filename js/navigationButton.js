@@ -4,7 +4,10 @@ define([
 
     var NavigationButtonView = Backbone.View.extend({
 
-        initialize: function() {
+        initialize: function(options) {
+            this.$parent = options.$parent;
+            this.$el = null; //clear backbone div
+
             this.preRender();
         },
 
@@ -14,10 +17,19 @@ define([
         },
 
         render: function() {
-            var template = Handlebars.templates[this.template];
+            var template = Handlebars.templates["navigationButton-"+this.model.get("_pluginName")];
+
+            //replace current element or add new element to navigation bar
+
+            var $old = this.$el;
             this.$el = $(template(this.model.toJSON()));
             this.el = this.$el[0];
-            this.$el.appendTo('.navigation > .navigation-inner');
+            if ($old) {
+                $old.replaceWith(this.$el);
+            } else {
+                this.$el.appendTo(this.$parent);
+            }
+
             _.defer(_.bind(function() {
                 Adapt.trigger('navigationButtonView:postRender', this);
             }, this));

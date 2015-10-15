@@ -7,45 +7,41 @@ define([
 
     _.extend(NavigationView.prototype, {
 
-        className: "navigation",
-
-        events: {
-            'click button':'triggerEvent'
-        },
+        layouts: [],
+        $elements: null,
+        coreChildren: [],
 
         initialize: function() {
+            if (Adapt.navigation) return false;
+            Adapt.navigation = this;
+
+            this.listenToOnce(Adapt, "app:dataReady", this.onDataReady);
+        },
+
+        onDataReady: function() {
             this.setupConfig()
             this.preRender();
+            this.createCoreChildren();
             this.setupEventListeners();
         },
-
-        layouts: [],
+        
         setupConfig: function() {
-            this.layouts.push ( Adapt.course.get("_navigationLayout") || defaultSettings );
-            this.globals = Adapt.course.get("_globals");
-        },
-
-        preRender: function() {
-            Adapt.trigger('navigationView:preRender', this);
-            this.render();
-        },
-
-        render: function() {
-            var template = Handlebars.templates[this.template]
-            this.$el.html(template({_globals: Adapt.course.get("_globals")})).appendTo('#wrapper');
-            this.createCoreChildren();
-            _.delay(_.bind(function() {
-                Adapt.trigger('navigationView:postRender', this);
-            }, this), 250);
-            return this;
+            var layout = Adapt.course.get("_navigationLayout") || defaultSettings;
+            layout = this.addDefaultsToLayout(layout);
+            this.layouts.push( layout );
         },
 
         createCoreChildren: function() {
             var current = this.getCurrentLayout();
-            var items = this.getLayoutItems(current);
-            items = _.where(items, { _type: "_core"} );
+            items = _.where(current, { _type: "_core"} );
+
+            var $childContainer = $('.navigation > .navigation-inner');
+
             for (var i = 0, l = items.length; i < l; i++) {
-                new NavigationButtonView({ model: new Backbone.Model(items[i]) });
+                this.coreChildren.push(new NavigationButtonView({ 
+                    model: new Backbone.Model(items[i]),
+                    $parent: $childContainer
+                }));
             }
         },
 
@@ -53,34 +49,29 @@ define([
             return this.layouts[this.layouts.length -1 ];
         },
 
-        getLayoutItems: function(layout) {
+        addDefaultsToLayout: function(layout) {
+            var globals = Adapt.course.get("_globals");
             for (var i = 0, l = layout.length; i < l; i++) {
                 var item = layout[i];
-                var globals = {};
+                var extensionDefaults = {};
                 switch (item._pluginName) {
                 case "text": case "back": case "drawer": case "home": case "graphic":
-                    globals = _.findWhere(defaultSettings, {_pluginName: item._pluginName}) || {};
+                    extensionDefaults = _.findWhere(defaultSettings, {_pluginName: item._pluginName}) || {};
                     item._type = "_core";
                     break;
                 default:
                     var k = "_extensions";
                     var e = "_"+item._pluginName;
-                    if (this.globals[k] && this.globals[k][e]) {
+                    if (globals[k] && globals[k][e]) {
                         var defaultGlobals = _.findWhere(defaultSettings, {_pluginName: item._pluginName}) || {};
-                        globals = $.extend(true, defaultGlobals, this.globals[k][e]);
+                        extensionDefaults = $.extend(true, defaultGlobals, globals[k][e]);
                     }
                     item._type = k;
                     item._plugin = e;
                 }
-                item._index = item._index === undefined ? globals._index === undefined ? i : globals._index : item._index;
-                item._classes = item._classes || globals._classes;
-                item._iconClasses = item._iconClasses || globals._iconClasses;
-                item._layout = item._layout || globals._layout;
-                item._sizes = item._sizes || globals._sizes;
-                item._dataEvent = item._dataEvent || globals._dataEvent;
-                item.tooltip = item.tooltip || globals.tooltip;
-                item.ariaLabel = item.ariaLabel || globals.ariaLabel;
-                item.text = item.text || globals.text;
+                var combined = _.extend({}, extensionDefaults, item);
+                _.extend(item, combined);
+                if (item._index === undefined) item._index = i;
             }
             return layout;
         },
@@ -90,8 +81,10 @@ define([
             this.listenTo(Adapt, 'menuView:ready pageView:ready pluginView:ready', this.onSectionLoaded);
 
             this.listenTo(Adapt, 'navigation:addLayout', this.addLayout);
-            this.listenTo(Adapt, 'navigation:updateLayout', this.updateLayout);
-            this.listenTo(Adapt, 'navigation:removeLayout', this.removeLayout);
+            this.listenTo(Adapt, 'navigation:cloneLayout', this.cloneLayout);
+            this.listenTo(Adapt, 'navigation:updateLayout', this.updateCurrentLayout);
+            this.listenTo(Adapt, 'navigation:changeLayout', this.changeCurrentLayout);
+            this.listenTo(Adapt, 'navigation:removeLayout', this.removeCurrentLayout);
         },
 
         onSectionLoading: function(location) {
@@ -112,41 +105,37 @@ define([
         },
 
         onSectionLoaded: function() {
-            this.getCurrentLayout().$elements = this.removeCurrentElements();
             this.drawLayout();
-            this.generateCurrentLayoutStylesheet();
             this.$el.fadeIn('fast');
         },
 
-        removeCurrentElements: function() {
-            var $elements = this.getCurrentElements();
-            $elements.detach();
-            return $elements;
+        drawLayout: function() {
+
+            this.reRenderCoreChildren();
+
+            this.$elements = this.getCurrentElements();
+
+            var sortedElements = this.sortCurrentElements();
+
+            this.injectTooltips();
+
+            this.makeCurrentLayoutStylesheet();
+
+            //sort elements here
+            this.$(".navigation-inner").append(sortedElements.$lefts);
+            this.$(".navigation-center").append(sortedElements.$centers);
+            this.$(".navigation-inner").append(sortedElements.$rights);
+
         },
 
         getCurrentElements: function() {
            return this.$(".navigation-inner, .navigation-center").children(":not(.aria-label, .navigation-center)");
         },
 
-        drawLayout: function() {
-            var $elements = this.getCurrentLayout().$elements;
-
-            var sortedElements = this.sortElements($elements);
-
-            this.injectTooltips(this.getCurrentLayout(), $elements);
-
-            this.generateCurrentLayoutStylesheet();
-
-            //sort elements here
-            this.$(".navigation-inner").append(sortedElements.$lefts);
-            this.$(".navigation-center").append(sortedElements.$centers);
-            this.$(".navigation-inner").append(sortedElements.$rights);
-        },
-
-        sortElements: function($elements) {
+        sortCurrentElements: function() {
 
             var currentLayout = this.getCurrentLayout();
-            var layoutItems = this.getLayoutItems(currentLayout);
+            var layoutItems = this.addDefaultsToLayout(currentLayout);
 
             var lefts = _.where(layoutItems, { _layout: "left"});
             var centers = _.where(layoutItems, { _layout: "center"});
@@ -170,23 +159,23 @@ define([
             for (var i = 0, l = lefts.length; i < l; i++) {
                 var item = lefts[i];
                 var selector = "."+item._classes.split(" ").join(".");
-                var $selected = $elements.filter(selector);
+                var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
-                $lefts.push($elements.filter(selector)[0]);
+                $lefts.push($selected[0]);
             }
             for (var i = 0, l = centers.length; i < l; i++) {
                 var item = centers[i];
                 var selector = "."+item._classes.split(" ").join(".");
-                var $selected = $elements.filter(selector);
+                var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
-                $centers.push($elements.filter(selector)[0]);
+                $centers.push($selected[0]);
             }
             for (var i = 0, l = rights.length; i < l; i++) {
                 var item = rights[i];
                 var selector = "."+item._classes.split(" ").join(".");
-                var $selected = $elements.filter(selector);
+                var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
-                $rights.push($elements.filter(selector)[0]);
+                $rights.push($selected[0]);
             }
 
             return { 
@@ -197,23 +186,51 @@ define([
 
         },
 
-        injectTooltips: function(items, $elements) {
+        injectTooltips: function() {
+            var items = this.getCurrentLayout();
+
             for (var i = 0, l = items.length; i < l; i++) {
                 var item = items[i];
                 var selector = "."+item._classes.split(" ").join(".");
-                var $selected = $elements.filter(selector);
+                var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
-                if (item._type == "_extensions") {
+                switch (item._type) {
+                case "_extensions":
                     var $tooltip = $selected.find(".tooltip");
-                    if ($tooltip.length !== 0) continue;
+                    if ($tooltip.length !== 0) {
+                        $tooltip.html(item.tooltip);
+                        break;
+                    }
                     $selected.append($("<div class='tooltip'>"+item.tooltip+"</div>"));
+                    break;
                 }
             }
 
         },
 
-        generateCurrentLayoutStylesheet: function() {
-            var items = this.getLayoutItems(this.getCurrentLayout());
+        reRenderCoreChildren: function() {
+            var items = this.getCurrentLayout();
+
+            for (var i = 0, l = this.coreChildren.length; i < l; i++) {
+                var child = this.coreChildren[i];
+                var childModelClasses = child.model.get("_classes");
+                var childElementClasses = child.$el.attr("class");
+
+                var item = _.find(items, function(item) {
+                    if (childModelClasses == item._classes) return true;
+                });
+
+                if (!item) continue;
+                child.model.set(item);
+                child.preRender();
+
+                child.$el.attr("class", childElementClasses);
+            }
+
+        },
+
+        makeCurrentLayoutStylesheet: function() {
+            var items = this.addDefaultsToLayout(this.getCurrentLayout());
 
             var cssStyling = "";
 
@@ -238,115 +255,110 @@ define([
             this.$("> style").html(cssStyling);
         },
 
-        triggerEvent: function(event) {
-            event.preventDefault();
-            var currentEvent = $(event.currentTarget).attr('data-event');
-            Adapt.trigger('navigation:' + currentEvent);
-        },
-
         addLayout: function(layout) {
-            layout = layout || {};
+            //copy layout, enable only selected settings and overlay new settings on copy
 
-            var oldlayout = this.getCurrentLayout();
-            oldlayout.$elements = this.removeCurrentElements();
-            
-
-            if (layout instanceof Array) {
-                var merged = this.getMergedLayouts();
-                var items = this.getLayoutItems(merged);
-
-                var arr = layout;
-                layout = {};
-
-                if (items.length > 0 ) {
-                    for (var i = 0, l = items.length; i < l; i++) {
-                        var item = items[i];
-                        var isEnabled = _.contains(arr, item._pluginName );
-                        layout[item._type] = layout[item._type] || {};
-                        layout[item._type][item._plugin] = _.extend({}, item, {_isEnabled:isEnabled});
-                    }
-                }
-            }
+            layout = this.normaliseLayout(layout, false);
 
             this.layouts.push(layout);
-
-            this.pullElementsIntoLayout(layout);
 
             this.drawLayout();
         },
 
-        updateLayout: function(layout) {
-            layout = layout || {};
+        cloneLayout: function(layout) {
+            //copy layout, enable only selected settings and overlay new settings on copy
+
+            layout = this.normaliseLayout(layout, true);
+
+            this.layouts.push(layout);
+
+            this.drawLayout();
+        },
+
+        changeCurrentLayout: function(layout) {
+            //enabled only selected settings, overlaying new settings on existing
+            layout = this.normaliseLayout(layout, false);
 
             this.layouts.pop();
             this.layouts.push(layout);
 
-            layout.$elements = this.removeCurrentElements();
-            
-            if (layout instanceof Array) {
-                var merged = this.getMergedLayouts();
-                var items = this.getLayoutItems(merged);
+            this.drawLayout();
+        },
 
-                var arr = layout;
-                layout = {};
+        updateCurrentLayout: function(layout) {
+            //overlay new settings on existing settings
+            layout = this.normaliseLayout(layout, true);
 
-                if (items.length > 0 ) {
-                    for (var i = 0, l = items.length; i < l; i++) {
-                        var item = items[i];
-                        var isEnabled = _.contains(arr, item._pluginName );
-                        layout[item._type] = layout[item._type] || {};
-                        layout[item._type][item._plugin] = _.extend({}, item, {_isEnabled:isEnabled});
-                    }
-                }
-            }
-
-            this.pullElementsIntoLayout(layout);
+            this.layouts.pop();
+            this.layouts.push(layout);
 
             this.drawLayout();
         },
 
-        getMergedLayouts: function() {
+        normaliseLayout: function(layout, updateOnly) {
+            //1. convert layout style ['pluginName', 'pluginName'] to [ { object }, { object }]
+            //2. overlay new layout ontop of old layout, to preserve layout context as layouts are add
+            //3. enabled only selected plugins or keep existing
+
+            layout = layout || [];
+
+            var allItems = this.getAllLayoutsCollapsed();
+            //allItems = this.addDefaultsToLayout(allItems);
+
+            if (allItems.length === 0) return layout;
+
+            var normalisedLayout = [];
+
+            for (var i = 0, l = allItems.length; i < l; i++) {
+                var notFound = false;
+                var oldItem = allItems[i];
+                var newItem;
+
+                if (_.contains(layout, oldItem._pluginName)) { //item referenced by string
+                    newItem = oldItem;
+                } else {
+                    newItem = _.findWhere(layout, { _pluginName: oldItem._pluginName }); //whole new item object
+                    if (newItem) {
+                        newItem = $.extend(true, oldItem, newItem); //overlay updates
+                    } else {
+                        notFound = true;
+                        newItem = oldItem;
+                    }
+                }
+
+                if (!updateOnly) {
+                    if (notFound) {
+                        newItem._isEnabled = false;
+                    } else {
+                        newItem._isEnabled = true;
+                    }
+                }
+
+                normalisedLayout.push(newItem);
+            }
+
+            return normalisedLayout;
+        },
+
+        getAllLayoutsCollapsed: function() {
+            //collapse all layouts, taking newest most layouts as prescidence 
+
             var merged = {};
-            for (var i = 0, l = this.layouts.length; i < l; i++) {
-                for (var k in this.layouts[i]) {
-                    merged[k] = merged[k] || {};
-                    _.extend(merged[k], this.layouts[i][k]);
+            for (var i = this.layouts.length-1, l = -1; i > l; i--) {
+                var layout = this.layouts[i];
+                for (var la = 0, lal = layout.length; la < lal; la++) {
+                    var item = layout[la];
+                    merged[item._pluginName] = merged[item._pluginName] || {};
+                    merged[item._pluginName] = $.extend(true, {}, item, merged[item._pluginName]);
                 }
             }
-            return merged;
+            return _.values(merged);
         },
 
-        pullElementsIntoLayout: function(toLayout) {
-            var $allElements = $(this.getAllLayoutElements());
+        removeCurrentLayout: function() {
+            //remove last layout from stack and restore previous layout
 
-            var items = this.getLayoutItems(toLayout);
-
-            if (!toLayout.$elements) toLayout.$elements = $([]);
-
-            for (var i = 0, l = items.length; i < l; i++) {
-                if (items[i]._isEnabled) {
-                    if (!items[i]._classes) continue;
-                    var $element = $allElements.filter("."+items[i]._classes.split(" ").join("."));
-                    if ($element.length === 0) continue;
-                    toLayout.$elements.push($element[0]);
-                }
-            }
-
-        },
-
-        getAllLayoutElements: function() {
-            var $elementsArr = _.pluck(this.layouts, "$elements");
-
-            return _.reduce($elementsArr, function(memo, $item) {
-                if ($item === undefined) return memo;
-                return memo.concat($item.toArray());
-            }, []);
-        },
-
-        removeLayout: function() {
             if (this.layouts.length <= 1) return;
-
-            this.getCurrentLayout().$elements = this.removeCurrentElements();
 
             this.layouts.pop();
 
@@ -356,5 +368,7 @@ define([
         template: "navigation-alternative"
 
     });
+
+    new NavigationView();
 
 });
