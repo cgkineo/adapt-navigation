@@ -3,7 +3,8 @@
 
 ###Description
 The is a layout engine for the navigation bar.   
-The engine is built using a layout stack. The initial layout in the course.json is the first item on the stack.  
+The engine is built using a layout stack.  
+The initial layout in the ``course.json`` is the first item on the stack.  
 A new layout can be added to or cloned from the layout stack.  
 The current layout can be changed, updated or removed.  
 
@@ -56,8 +57,8 @@ Each item in a layout represents a button the navigation bar.
 | ``Adapt.trigger("navigation:addLayout", layoutArray);`` | Add a layout to the stack, hiding all items not listed |
 | ``Adapt.trigger("navigation:cloneLayout", layoutArray);`` | Add a layout to the stack, updating all items listed |
 | ``Adapt.trigger("navigation:changeLayout", layoutArray);`` | Change the current layout, hiding all items not listed |
-| ``Adapt.trigger("navigation:updateLayout", layoutArray);`` | Change the current layout, updating all items not listed |
+| ``Adapt.trigger("navigation:updateLayout", layoutArray);`` | Change the current layout, updating all items listed |
 | ``Adapt.trigger("navigation:removeLayout");`` | Remove the current layout from the stack |
-| ``Adapt.trigger("navigation:addButtonDefaults", defaultsObject);`` | Add a button default for tooltips, layout and screen size options |
+| ``Adapt.trigger("navigation:addButtonDefaults", defaultsObject);`` | Add/update a button default for tooltips, layout and screen size options |
 
 Layout arrays for ``addLayout`` and ``changeLayout`` can use an ``array[string]`` instead of an ``array[object]`` format. So ``Adapt.trigger("navigation:updateLayout", ['back', 'drawer']);`` would hide all buttons but ``back`` and ``drawer``. The two style can be mixed, so ``Adapt.trigger("navigation:updateLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);`` would show only the ``back``, ``text`` and ``drawer`` but would also update the navigation bar text to ``"New Title"``. 
