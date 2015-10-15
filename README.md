@@ -59,3 +59,5 @@ Each item in a layout represents a button the navigation bar.
 | ``Adapt.trigger("navigation:updateLayout", layoutArray);`` | Change the current layout, updating all items not listed |
 | ``Adapt.trigger("navigation:removeLayout");`` | Remove the current layout from the stack |
 | ``Adapt.trigger("navigation:addButtonDefaults", defaultsObject);`` | Add a button default for tooltips, layout and screen size options |
+
+Layout arrays for ``addLayout`` and ``changeLayout`` can use an ``array[string]`` instead of an ``array[object]`` format. So ``['back', 'drawer']`` would hide all buttons but ``back`` and ``drawer``. The two style can be mixed, so ``['back', { _name: 'text', text: "New Title"}, 'drawer']`` would show only the ``back``, ``text`` and ``drawer`` but would also update the navigation bar text to ``"New Title"``. 
