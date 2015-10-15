@@ -216,7 +216,7 @@ define([
             for (var i = 0, l = this.coreChildren.length; i < l; i++) {
                 var child = this.coreChildren[i];
                 var childModelClasses = child.model.get("_classes");
-                var childElementClasses = child.$el.attr("class");
+                var isDisplayNone = _.contains(child.$el.attr("class").split(" "), "display-none");
 
                 var item = _.find(items, function(item) {
                     if (childModelClasses == item._classes) return true;
@@ -226,7 +226,7 @@ define([
                 child.model.set(item);
                 child.preRender();
 
-                child.$el.attr("class", childElementClasses);
+                if (isDisplayNone) child.$el.addClass("display-none");
             }
 
         },
