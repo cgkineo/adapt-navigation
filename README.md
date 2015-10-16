@@ -15,7 +15,7 @@ The current layout can be changed, updated or removed.
 Copy [example.json](https://github.com/cgkineo/adapt-navigation/blob/develop/example.json) into ``course.json`` and rearrange / amend.
 
 ####Layout items
-Each item in a layout represents a button the navigation bar.
+Each item in a layout represents a button on the navigation bar.
 
 ```
 {
