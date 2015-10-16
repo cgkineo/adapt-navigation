@@ -354,7 +354,19 @@ define([
             layout = layout || [];
 
             var allItems = this.getAllLayoutsCollapsed();
-            //allItems = this.addDefaultsToLayout(allItems);
+        
+            //add new items if not existing
+            _.each(layout, function(item) {
+                var itemName;
+                if (typeof item == "string") {
+                    itemName = item;
+                } else {
+                    itemName = item._name;
+                }
+                if (!_.findWhere(allItems, {_name: itemName})) {
+                    allItems.push(item);
+                }
+            });
 
             if (allItems.length === 0) return layout;
 
