@@ -63,6 +63,7 @@ define(function() {
             "_name": "drawer",
             "_isEnabled": true,
             "_classes": "base navigation-drawer-toggle-button",
+            "_index": 3000,
             "_iconClasses": "icon icon-list",
             "_dataEvent": "toggleDrawer",
             "_showTooltip": true,
@@ -75,6 +76,7 @@ define(function() {
         {
             "_name": "pageLevelProgress",
             "_classes": "base page-level-progress-navigation",
+            "_index": 2000,
             "_isEnabled": true,
             "_layout": "right",
             "_sizes": "small medium large",

@@ -151,7 +151,7 @@ define([
 
                 if (item._showOn) {
                     var allowedLocations = item._showOn.split(" ");
-                    isDisplayed = _.intersection(locationArr, allowedLocations).length > 0 && _.intersection(locationArr, disallowLocations).length === 0;
+                    isDisplayed = _.intersection(locationArr, allowedLocations).length > 0;
                 }
 
                 if (item._hideOn) {
