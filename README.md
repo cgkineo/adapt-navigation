@@ -58,7 +58,7 @@ Each item in a layout represents a button on the navigation bar.
 | --- | --- |
 | ``Adapt.trigger("navigation:addLayout", layoutArray);`` | Add a layout to the stack, hiding all items not listed |
 | ``Adapt.trigger("navigation:cloneLayout", layoutArray);`` | Add a layout to the stack, updating all items listed |
-| ~~``Adapt.trigger("navigation:changeLayout", layoutArray);``~~ | ~~Change the current layout, hiding all items not listed~~ |
+| ~~``Adapt.trigger("navigation:changeLayout", layoutArray);``~~ | ~~Change the current layout, hiding all items not listed~~ *the use-cases for this are very few |
 | ``Adapt.trigger("navigation:updateLayout", layoutArray);`` | Change the current layout, updating all items listed |
 | ``Adapt.trigger("navigation:removeLayout");`` | Remove the current layout from the stack |
 | ``Adapt.trigger("navigation:addButtonDefaults", defaultsObject);`` | Add/update a button default for tooltips, layout and screen size options |
