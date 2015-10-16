@@ -69,7 +69,7 @@ Layout arrays for ``addLayout`` and ``changeLayout`` can use an ``array[string]`
 
 * update current layout text to "New Title",
 ```
-Adapt.trigger("navigation:updateLayout", [{ _name: 'text', text: "New Title"}, 'drawer']);
+Adapt.trigger("navigation:updateLayout", [{ _name: 'text', text: "New Title"}]);
 ```
 
 * change current layout text to "New Title", showing only text, back and drawer
