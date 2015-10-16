@@ -6,6 +6,8 @@
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "left",
+        "_sizes": "small medium large",
+        "_locations": "menu page",
         "tooltip": "Back",
         "ariaLabel": "Back"
     },
@@ -14,13 +16,27 @@
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "left",
+        "_sizes": "small medium large",
+        "_locations": "menu page",
         "tooltip": "Home",
         "ariaLabel": "Home"
+    },
+    {
+        "_name": "parent",
+        "_isEnabled": true,
+        "_showTooltip": true,
+        "_layout": "left",
+        "_sizes": "small medium large",
+        "_locations": "menu page",
+        "tooltip": "Parent",
+        "ariaLabel": "Parent"
     },
     {
         "_name": "graphic",
         "_isEnabled": true,
         "_layout": "center",
+        "_sizes": "medium large",
+        "_locations": "course menu page",
         "_graphic": {
             "_src": "http://vignette4.wikia.nocookie.net/mrmen/images/5/52/Small.gif/revision/latest?cb=20100731114437",
             "alt": "Image of Mr Small from 'Mr Men' cartoon series"
@@ -30,6 +46,8 @@
         "_name": "text",
         "_isEnabled": true,
         "_layout": "center",
+        "_sizes": "medium large",
+        "_locations": "course menu page",
         "text": "Adapt Learning",
         "ariaLabel": "Adapt Learning"
     },    
@@ -38,6 +56,8 @@
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "right",
+        "_sizes": "small medium large",
+        "_locations": "page",
         "tooltip": "Progress"
     },
     {
@@ -45,6 +65,8 @@
         "_isEnabled": true,
         "_showTooltip": true,
         "_layout": "right",
+        "_sizes": "small medium large",
+        "_locations": "course menu page",
         "tooltip": "Drawer",
         "ariaLabel": "Open course resources."
     }

@@ -6,6 +6,7 @@ define(function() {
             "_classes": "base navigation-graphic",
             "_layout": "center",
             "_sizes": "medium large",
+            "_locations": "course menu page",
             "text": "Adapt Learning",
             "ariaLabel": "Adapt Learning",
         },
@@ -15,6 +16,7 @@ define(function() {
             "_classes": "base navigation-text",
             "_layout": "center",
             "_sizes": "medium large",
+            "_locations": "course menu page",
             "text": "Adapt Learning",
             "ariaLabel": "Adapt Learning",
         },
@@ -27,6 +29,7 @@ define(function() {
             "_showTooltip": true,
             "_layout": "left",
             "_sizes": "small medium large",
+            "_locations": "menu page",
             "tooltip": "Back",
             "ariaLabel": "Back"
         },
@@ -37,10 +40,24 @@ define(function() {
             "_iconClasses": "icon icon-home",
             "_layout": "left",
             "_sizes": "small medium large",
+            "_locations": "menu page",
             "_showTooltip": true,
             "_dataEvent": "homeButton",
             "tooltip": "Home",
             "ariaLabel": "Home"
+        },
+        {
+            "_name": "parent",
+            "_isEnabled": true,
+            "_classes": "base navigation-parent-button",
+            "_iconClasses": "icon icon-controls-small-up",
+            "_layout": "left",
+            "_sizes": "small medium large",
+            "_locations": "menu page",
+            "_showTooltip": true,
+            "_dataEvent": "parentButton",
+            "tooltip": "Parent",
+            "ariaLabel": "Parent"
         },
         {
             "_name": "drawer",
@@ -51,6 +68,7 @@ define(function() {
             "_showTooltip": true,
             "_layout": "right",
             "_sizes": "small medium large",
+            "_locations": "course menu page",
             "tooltip": "Drawer",
             "ariaLabel": "Open course resources."
         },
@@ -60,6 +78,7 @@ define(function() {
             "_isEnabled": true,
             "_layout": "right",
             "_sizes": "small medium large",
+            "_locations": "page",
             "_showTooltip": true,
             "tooltip": "Progress"
         }

@@ -60,7 +60,7 @@ define([
                 var item = layout[i];
                 var extensionDefaults = {};
                 switch (item._name) {
-                case "text": case "back": case "drawer": case "home": case "graphic":
+                case "text": case "back": case "drawer": case "home": case "graphic": case "parent":
                     extensionDefaults = _.findWhere(defaultSettings, {_name: item._name}) || {};
                     item._type = "_core";
                     break;
@@ -93,21 +93,8 @@ define([
             this.listenTo(Adapt, 'navigation:removeLayout', this.removeCurrentLayout);
         },
 
-        onSectionLoading: function(location) {
+        onSectionLoading: function() {
             this.$el.hide();
-            this.hideNavigationButton(location);
-        },
-
-        hideNavigationButton: function(location) {
-            if (location._currentLocation === "course") {
-                $('.navigation-back-button').addClass('display-none');
-            } else {
-                this.showNavigationButton();
-            }
-        },
-
-        showNavigationButton: function() {
-            $('.navigation-back-button').removeClass('display-none');
         },
 
         onSectionLoaded: function() {
@@ -121,6 +108,8 @@ define([
             this.reRenderCoreChildren();
 
             this.$elements = this.getCurrentElements();
+
+            this.hideButtons();
 
             var sortedElements = this.sortCurrentElements();
 
@@ -139,6 +128,39 @@ define([
 
         getCurrentElements: function() {
            return this.$(".navigation-inner, .navigation-center").children(":not(.aria-label, .navigation-center)");
+        },
+
+        hideButtons: function() {
+            var current = this.getCurrentLayout();
+            var location = Adapt.location;
+            var locationArr;
+            switch (location._currentLocation) {
+            case "course":
+                locationArr =  [ location._currentLocation, location._currentId ];
+                break;
+            default:
+                locationArr =  [ location._currentLocation, location._contentType, location._currentId ];
+            }
+
+            for (var i = 0, l = current.length; i < l; i++) {
+                var item = current[i];
+                if (!item._locations) continue;
+
+                var allowedLocations = item._locations.split(" ");
+
+                var isDisplayed = _.intersection(locationArr, allowedLocations).length > 0;
+                
+                var $selected = this.$elements.filter(this.getClassesSelector(item));
+                if ($selected.length === 0) continue;
+
+                if (!isDisplayed) {
+                    $selected.addClass('display-none');
+                } else {
+                    $selected.removeClass('display-none');
+                }
+
+            }
+
         },
 
         sortCurrentElements: function() {
@@ -167,21 +189,21 @@ define([
 
             for (var i = 0, l = lefts.length; i < l; i++) {
                 var item = lefts[i];
-                var selector = "."+item._classes.split(" ").join(".");
+                var selector = this.getClassesSelector(item);
                 var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
                 $lefts.push($selected[0]);
             }
             for (var i = 0, l = centers.length; i < l; i++) {
                 var item = centers[i];
-                var selector = "."+item._classes.split(" ").join(".");
+                var selector = this.getClassesSelector(item);
                 var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
                 $centers.push($selected[0]);
             }
             for (var i = 0, l = rights.length; i < l; i++) {
                 var item = rights[i];
-                var selector = "."+item._classes.split(" ").join(".");
+                var selector = this.getClassesSelector(item);
                 var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
                 $rights.push($selected[0]);
@@ -195,12 +217,16 @@ define([
 
         },
 
+        getClassesSelector: function(item) {
+            return "." + item._classes.split(" ").join(".")
+        },
+
         injectTooltips: function() {
             var items = this.getCurrentLayout();
 
             for (var i = 0, l = items.length; i < l; i++) {
                 var item = items[i];
-                var selector = "."+item._classes.split(" ").join(".");
+                var selector = this.getClassesSelector(item);
                 var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
                 switch (item._type) {
@@ -245,20 +271,22 @@ define([
             var cssStyling = "";
 
             for (var i = 0, l = items.length; i < l; i++) {
-                if (!items[i]._isEnabled) {
-                    cssStyling += ".navigation > .navigation-inner ." + items[i]._classes.split(" ").join(".") + "{ display: none; } \n";
-                } else if (items[i]._sizes) {
-                    var showSizes = items[i]._sizes.split(" ");
-                    var hideSizes = _.difference(['small', 'medium', 'large'],showSizes);
+                var item = items[i];
+                var selector = this.getClassesSelector(item);
+                if (!item._isEnabled) {
+                    cssStyling += ".navigation > .navigation-inner " + selector + "{ display: none; } \n";
+                } else if (item._sizes) {
+                    var showSizes = item._sizes.split(" ");
+                    var hideSizes = _.difference(['small', 'medium', 'large'], showSizes);
                     if (hideSizes.length === 0) continue;
                     for (var s = 0, sl = hideSizes.length; s < sl; s++) {
-                        cssStyling += ".size-" + hideSizes[s] + " .navigation > .navigation-inner ." + items[i]._classes.split(" ").join(".") + " { display: none; } \n"; 
+                        cssStyling += ".size-" + hideSizes[s] + " .navigation > .navigation-inner " + selector + " { display: none; } \n"; 
                     }
                     
                 }
-                if (items[i]._type == "_extensions") {
-                    var floatValue = items[i]._layout == "right" ? "right" : items[i]._layout == "center" ? "none": "left";
-                    cssStyling += ".navigation > .navigation-inner ." + items[i]._classes.split(" ").join(".") + "{ float: "+floatValue+"; } \n";
+                if (item._type == "_extensions") {
+                    var floatValue = items[i]._layout == "right" ? "right" : item._layout == "center" ? "none": "left";
+                    cssStyling += ".navigation > .navigation-inner " + selector + "{ float: "+floatValue+"; } \n";
                 }
             }
 
