@@ -42,7 +42,7 @@ Each item in a layout represents a button the navigation bar.
 | ``_showTooltip`` | ``true``,``false`` as described |
 | ``_layout`` | ``left``,``right``,``center`` as described |
 | ``_sizes`` | ``small``,``medium``,``large`` include all screen sizes displaying the button |
-| ``_locations`` | ``course``,``menu``,``page``, ``locationid`` include on all relevant content objects |
+| ``_locations`` | ``course``,``menu``,``page``, ``contentObjectId`` include on all relevant content objects |
 | ``tooltip`` | Tooltip text |
 | ``ariaLabel`` | Button aria label text |
 | ``text`` | ``text`` button text |
