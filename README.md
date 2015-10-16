@@ -63,4 +63,31 @@ Each item in a layout represents a button on the navigation bar.
 | ``Adapt.trigger("navigation:removeLayout");`` | Remove the current layout from the stack |
 | ``Adapt.trigger("navigation:addButtonDefaults", defaultsObject);`` | Add/update a button default for tooltips, layout and screen size options |
 
-Layout arrays for ``addLayout`` and ``changeLayout`` can use an ``array[string]`` instead of an ``array[object]`` format. So ``Adapt.trigger("navigation:updateLayout", ['back', 'drawer']);`` would hide all buttons but ``back`` and ``drawer``. The two styles can be mixed, so ``Adapt.trigger("navigation:updateLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);`` would show only the ``back``, ``text`` and ``drawer`` but would also update the navigation bar text to ``"New Title"``. 
+Layout arrays for ``addLayout`` and ``changeLayout`` can use an ``array[string]`` instead of an ``array[object]`` format. So ``Adapt.trigger("navigation:changeLayout", ['back', 'drawer']);`` would hide all buttons but ``back`` and ``drawer``. The two styles can be mixed, so ``Adapt.trigger("navigation:changeLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);`` would show only the ``back``, ``text`` and ``drawer`` but would also update the navigation bar text to ``"New Title"``. 
+
+###Examples
+
+* update current layout text to "New Title",
+```
+Adapt.trigger("navigation:updateLayout", [{ _name: 'text', text: "New Title"}, 'drawer']);
+```
+
+* change current layout text to "New Title", showing only text, back and drawer
+```
+Adapt.trigger("navigation:updateLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);
+```
+
+* clone current layout and change text to "New Title"
+```
+Adapt.trigger("navigation:cloneLayout", [ { _name: 'text', text: "New Title"} ]);
+```
+
+* add new layout and change text to "New Title", shoing only text, back and drawer
+```
+Adapt.trigger("navigation:cloneLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);
+```
+
+* revert current layout to previous layout
+```
+Adapt.trigger("navigation:removeLayout");
+```
