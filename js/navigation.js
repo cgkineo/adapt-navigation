@@ -95,12 +95,12 @@ define([
         },
 
         onSectionLoading: function() {
-            this.$el.hide();
+            this.$(".navigation-inner").hide();
         },
 
         onSectionLoaded: function() {
             this.drawLayout();
-            this.$el.fadeIn('fast');
+            this.$(".navigation-inner").fadeIn('fast');
         },
 
         drawLayout: function() {
