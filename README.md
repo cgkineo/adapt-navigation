@@ -84,7 +84,7 @@ Adapt.trigger("navigation:cloneLayout", [ { _name: 'text', text: "New Title"} ])
 
 * add new layout and change text to "New Title", shoing only text, back and drawer
 ```
-Adapt.trigger("navigation:cloneLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);
+Adapt.trigger("navigation:addLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);
 ```
 
 * revert current layout to previous layout
