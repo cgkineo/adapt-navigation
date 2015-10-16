@@ -12,6 +12,10 @@ define([
         coreChildren: [],
         defaultSettings: defaultSettings,
 
+        events: {
+            'click [data-event]':'triggerEvent'
+        },
+
         initialize: function() {
             if (Adapt.navigation) return false;
             Adapt.navigation = this;
@@ -113,6 +117,7 @@ define([
 
         drawLayout: function() {
 
+            this.undelegateEvents();
             this.reRenderCoreChildren();
 
             this.$elements = this.getCurrentElements();
@@ -127,6 +132,8 @@ define([
             this.$(".navigation-inner").append(sortedElements.$lefts);
             this.$(".navigation-center").append(sortedElements.$centers);
             this.$(".navigation-inner").append(sortedElements.$rights);
+
+            this.delegateEvents();
 
         },
 
@@ -211,6 +218,7 @@ define([
         },
 
         reRenderCoreChildren: function() {
+
             var items = this.getCurrentLayout();
 
             for (var i = 0, l = this.coreChildren.length; i < l; i++) {
