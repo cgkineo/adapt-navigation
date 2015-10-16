@@ -28,6 +28,7 @@ define([
             this.preRender();
             this.createCoreChildren();
             this.setupEventListeners();
+            Adapt.trigger("navigation:ready");
         },
         
         setupConfig: function() {

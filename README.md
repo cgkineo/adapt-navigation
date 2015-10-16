@@ -67,6 +67,11 @@ Layout arrays for ``addLayout`` and ``changeLayout`` can use an ``array[string]`
 
 ###Examples
 
+* wait for navigation to be ready
+```
+    this.listenToOnce(Adapt, "navigation:ready", this.callbackFunction);
+```
+
 * update current layout text to "New Title",
 ```
 Adapt.trigger("navigation:updateLayout", [{ _name: 'text', text: "New Title"}]);
