@@ -227,6 +227,7 @@ define([
 
             for (var i = 0, l = items.length; i < l; i++) {
                 var item = items[i];
+                if (!item._showTooltip) continue;
                 var selector = this.getClassesSelector(item);
                 var $selected = this.$elements.filter(selector);
                 if ($selected.length === 0) continue;
@@ -240,6 +241,7 @@ define([
                     $selected.append($("<div class='tooltip'>"+item.tooltip+"</div>"));
                     break;
                 }
+                $selected.addClass("tooltip-show");
             }
 
         },
