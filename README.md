@@ -27,6 +27,7 @@ Each item in a layout represents a button the navigation bar.
     "_showTooltip": true,
     "_layout": "left",
     "_sizes": "small medium large",
+    "_locations": "menu page",
     "tooltip": "Back",
     "ariaLabel": "Back"
 }
