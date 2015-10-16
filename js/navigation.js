@@ -145,12 +145,20 @@ define([
 
             for (var i = 0, l = current.length; i < l; i++) {
                 var item = current[i];
-                if (!item._locations) continue;
+                if (!item._showOn && !item._hideOn) continue;
 
-                var allowedLocations = item._locations.split(" ");
+                var isDisplayed = false;
 
-                var isDisplayed = _.intersection(locationArr, allowedLocations).length > 0;
-                
+                if (item._showOn) {
+                    var allowedLocations = item._showOn.split(" ");
+                    isDisplayed = _.intersection(locationArr, allowedLocations).length > 0 && _.intersection(locationArr, disallowLocations).length === 0;
+                }
+
+                if (item._hideOn) {
+                    var disallowLocations = item._hideOn.split(" ");
+                    isDisplayed = isDisplayed && _.intersection(locationArr, disallowLocations).length === 0;
+                }
+
                 var $selected = this.$elements.filter(this.getClassesSelector(item));
                 if ($selected.length === 0) continue;
 
@@ -378,11 +386,12 @@ define([
                 var notFound = false;
                 var oldItem = allItems[i];
                 var newItem;
+                var foundItem;
 
                 if (_.contains(layout, oldItem._name)) { //item referenced by string
                     newItem = oldItem;
                 } else {
-                    newItem = _.findWhere(layout, { _name: oldItem._name }); //whole new item object
+                    newItem = foundItem = _.findWhere(layout, { _name: oldItem._name }); //whole new item object
                     if (newItem) {
                         newItem = $.extend(true, oldItem, newItem); //overlay updates
                     } else {
@@ -395,7 +404,7 @@ define([
                     if (notFound) {
                         newItem._isEnabled = false;
                     } else {
-                        newItem._isEnabled = true;
+                        if (foundItem._isEnabled === undefined) newItem._isEnabled = true;
                     }
                 }
 
