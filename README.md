@@ -47,7 +47,7 @@ Each item in a layout represents a button on the navigation bar.
 | ``tooltip`` | Tooltip text |
 | ``ariaLabel`` | Button aria label text |
 | ``text`` | ``text`` button text |
-| ``_graphic`` | Graphic ``src`` and ``alt`` object |
+| ``_graphic`` | ``graphic`` ``src`` and ``alt`` object |
   
   
 
