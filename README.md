@@ -79,7 +79,7 @@ Adapt.trigger("navigation:updateLayout", [{ _name: 'text', text: "New Title"}]);
 
 * change current layout text to "New Title", showing only text, back and drawer
 ```
-Adapt.trigger("navigation:updateLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);
+Adapt.trigger("navigation:changeLayout", ['back', { _name: 'text', text: "New Title"}, 'drawer']);
 ```
 
 * clone current layout and change text to "New Title"
