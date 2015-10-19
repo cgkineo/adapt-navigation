@@ -7,6 +7,7 @@ define([
         initialize: function(options) {
             this.$parent = options.$parent;
             this.$el = null; //clear backbone div
+            this.template = options.template;
 
             this.preRender();
         },
@@ -17,7 +18,7 @@ define([
         },
 
         render: function() {
-            var template = Handlebars.templates["navigationButton-"+this.model.get("_name")];
+            var template = Handlebars.templates[this.template];
 
             //replace current element or add new element to navigation bar
 
@@ -34,11 +35,11 @@ define([
                 Adapt.trigger('navigationButtonView:postRender', this);
             }, this));
             return this;
-        },
-
-        template: "navigationButton"
+        }
 
     });
+
+    Adapt.register("navigationButton", NavigationButtonView);
 
     return NavigationButtonView;
     

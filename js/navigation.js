@@ -44,9 +44,11 @@ define([
             var $childContainer = $('.navigation > .navigation-inner');
 
             for (var i = 0, l = items.length; i < l; i++) {
+                var item = items[i];
                 this.coreChildren.push(new NavigationButtonView({ 
                     model: new Backbone.Model(items[i]),
-                    $parent: $childContainer
+                    $parent: $childContainer,
+                    template: "navigationButton-"+item._name
                 }));
             }
         },
