@@ -109,8 +109,11 @@ define([
 
             this.undelegateEvents();
             this.reRenderCoreChildren();
+            Adapt.trigger("navigation:render");
 
             this.$elements = this.getCurrentElements();
+
+            this.overrideItemDataEvents();
 
             this.hideButtons();
 
@@ -131,6 +134,22 @@ define([
 
         getCurrentElements: function() {
            return this.$(".navigation-inner, .navigation-center").children(":not(.aria-label, .navigation-center)");
+        },
+
+        overrideItemDataEvents: function() {
+            this.$elements = this.getCurrentElements();
+            var layouts = this.getCurrentLayout();
+
+            for (var i = 0, l = layouts.length; i < l; i++) {
+                var item = layouts[i];
+                var selector = this.getClassesSelector(item);
+                var $item = this.$elements.filter(selector);
+                if ($item.length === 0) return;
+
+                $item.attr("data-event", item._dataEvent).data("event", item._dataEvent);
+            }
+
+
         },
 
         hideButtons: function() {
