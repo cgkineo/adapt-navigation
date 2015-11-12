@@ -7,7 +7,8 @@
         "_showTooltip": true,
         "_layout": "left",
         "_sizes": "small medium large",
-        "_locations": "menu page",
+        "_showOn": "menu page",
+        "_hideOn": "",
         "tooltip": "Back",
         "ariaLabel": "Back"
     },
@@ -17,7 +18,8 @@
         "_showTooltip": true,
         "_layout": "left",
         "_sizes": "small medium large",
-        "_locations": "menu page",
+        "_showOn": "menu page",
+        "_hideOn": "",
         "tooltip": "Home",
         "ariaLabel": "Home"
     },
@@ -27,7 +29,8 @@
         "_showTooltip": true,
         "_layout": "left",
         "_sizes": "small medium large",
-        "_locations": "menu page",
+        "_showOn": "menu page",
+        "_hideOn": "",
         "tooltip": "Parent",
         "ariaLabel": "Parent"
     },
@@ -36,7 +39,8 @@
         "_isEnabled": true,
         "_layout": "center",
         "_sizes": "medium large",
-        "_locations": "course menu page",
+        "_showOn": "course menu page",
+        "_hideOn": "",
         "_graphic": {
             "_src": "http://vignette4.wikia.nocookie.net/mrmen/images/5/52/Small.gif/revision/latest?cb=20100731114437",
             "alt": "Image of Mr Small from 'Mr Men' cartoon series"
@@ -47,7 +51,8 @@
         "_isEnabled": true,
         "_layout": "center",
         "_sizes": "medium large",
-        "_locations": "course menu page",
+        "_showOn": "course menu page",
+        "_hideOn": "",
         "text": "Adapt Learning",
         "ariaLabel": "Adapt Learning"
     },    
@@ -57,7 +62,8 @@
         "_showTooltip": true,
         "_layout": "right",
         "_sizes": "small medium large",
-        "_locations": "page",
+        "_showOn": "page",
+        "_hideOn": "",
         "tooltip": "Progress"
     },
     {
@@ -66,7 +72,8 @@
         "_showTooltip": true,
         "_layout": "right",
         "_sizes": "small medium large",
-        "_locations": "course menu page",
+        "_showOn": "course menu page",
+        "_hideOn": "",
         "tooltip": "Drawer",
         "ariaLabel": "Open course resources."
     }
