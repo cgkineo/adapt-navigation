@@ -21,7 +21,7 @@ Each item in a layout represents a button on the navigation bar.
 {
     "_name": "back",
     "_isEnabled": true,
-    "_classes": "base navigation-back-button",
+    "_classes": "navigation-back-button",
     "_iconClasses": "icon icon-controls-small-left",
     "_dataEvent": "backButton",
     "_showTooltip": true,
