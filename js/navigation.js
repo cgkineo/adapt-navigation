@@ -322,7 +322,11 @@ define([
                 }
             }
 
-            this.$("> style").html(cssStyling);
+            if ($("html").is(".ie8")) {
+                this.$("> style")[0].styleSheet.cssText = cssStyling;
+            } else {
+                this.$("> style").html(cssStyling);
+            }
         },
 
         addButtonDefaults: function(buttonDefaults) {
